@@ -1,0 +1,8 @@
+---
+# copy app binary to server
+
+- name: "mrwilson - Copy Go binary to server"
+  copy: src="{{gopath}}/src/github.com/fmpwizard/mrwilson/mrwilson" dest=/srv/bot/mrwilson owner=bot group=bot mode=0755
+
+- name: Allow non-root to bind to lower ports (80)
+  command: setcap cap_net_bind_service=+ep /srv/bot/mrwilson

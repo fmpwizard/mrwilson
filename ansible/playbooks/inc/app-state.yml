@@ -1,0 +1,6 @@
+---
+# call start|stop|restart on an app
+
+- name: "mrwilson - {{app_state}}"
+  service: name=mrwilson state={{app_state}}
+  ignore_errors: yes

@@ -1,0 +1,23 @@
+---
+# configure the worker servers
+
+
+- name: Create group to run service as
+  group: name=bot state=present
+  tags: ['common-service', 'service', 'full']
+
+- name: Create user to run mrwilson as
+  user: name=bot shell=/bin/bash group=bot
+  tags: ['common-service', 'service', 'full']
+
+- name: add authorized_keys
+  authorized_key: user=bot key=https://github.com/fmpwizard.keys
+  tags: ['common-service', 'service', 'full']
+
+- name: Create worker directory
+  file: path=/srv/bot owner=bot group=bot mode=2770 state=directory
+  tags: ['common-service', 'service', 'full']
+
+- name: Copy mrwilson credentials file
+  template: src=mr.wilson.json.j2 dest=/home/bot/.mr.wilson.json owner=bot group=bot mode=0600
+  tags: ['common-service', 'service', 'full']

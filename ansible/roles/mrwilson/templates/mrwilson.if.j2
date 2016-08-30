@@ -1,0 +1,39 @@
+## <summary>policy for mrwilson</summary>
+
+########################################
+## <summary>
+##	Execute mrwilson_exec_t in the mrwilson domain.
+## </summary>
+## <param name="domain">
+## <summary>
+##	Domain allowed to transition.
+## </summary>
+## </param>
+#
+interface(`mrwilson_domtrans',`
+	gen_require(`
+		type mrwilson_t, mrwilson_exec_t;
+	')
+
+	corecmd_search_bin($1)
+	domtrans_pattern($1, mrwilson_exec_t, mrwilson_t)
+')
+
+######################################
+## <summary>
+##	Execute mrwilson in the caller domain.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`mrwilson_exec',`
+	gen_require(`
+		type mrwilson_exec_t;
+	')
+
+	corecmd_search_bin($1)
+	can_exec($1, mrwilson_exec_t)
+')

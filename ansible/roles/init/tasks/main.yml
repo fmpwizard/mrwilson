@@ -1,0 +1,8 @@
+---
+
+#A fresh fedora 24 on digital ocean does not have python, so we use this
+- raw: dnf -y install python
+  tags: ['common', 'init', 'full']
+
+- raw: dnf -y update
+  tags: ['common', 'init', 'full']

@@ -1,0 +1,26 @@
+---
+# common
+
+- name: python2-dnf
+  command: dnf install -y python2-dnf
+  tags: ['common']
+
+- name: Install basics
+  dnf: name={{ item }} state=latest
+  tags: common
+  with_items:
+    - curl
+    - vim
+    - bzip2
+    - libselinux-python
+    - setools-console
+    - policycoreutils-python-utils
+    - policycoreutils-devel
+    - make
+
+#- name: Add ops group
+#  roup: name=ops state=present
+#  tags: common
+#- name: Correct .bash_profile
+#  template: src=bash_profile.j2 dest={{ lookup('env','HOME') }}/.bash_profile owner={{ansible_env.USER}} mode=0644
+#  tags: common

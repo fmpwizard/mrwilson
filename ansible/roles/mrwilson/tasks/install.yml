@@ -1,0 +1,49 @@
+---
+# configure Mr Wilson's binary
+
+- name: Create Unit file - mrwilson
+  template: src=unit-mrwilson.j2 dest=/usr/lib/systemd/system/mrwilson.service owner=root group=root mode=0644
+  tags: ['mrwilson', 'service', 'full']
+
+- name: Reload systemctl
+  command: /usr/bin/systemctl --system daemon-reload
+  tags: ['mrwilson', 'service', 'full']
+
+- name: Enable mrwilson service
+  command: /usr/bin/systemctl enable mrwilson.service
+  tags: ['mrwilson', 'service', 'full']
+
+#http://unix.stackexchange.com/a/90761/55359
+#SELinux: allow a process to create any file in a certain directory
+#http://unix.stackexchange.com/questions/309122/how-to-create-a-custom-selinux-label/309301#309301
+- name: Copy SELinux Type Enforcement
+  template: src=mrwilson.te.j2 dest=/srv/bot/mrwilson.te owner=root group=root mode=0600
+  tags: ['mrwilson', 'service', 'full']
+
+- name: Copy SELinux File Context
+  template: src=mrwilson.fc.j2 dest=/srv/bot/mrwilson.fc owner=root group=root mode=0600
+  tags: ['mrwilson', 'service', 'full']
+
+- name: Copy SELinux Interface
+  template: src=mrwilson.if.j2 dest=/srv/bot/mrwilson.if owner=root group=root mode=0600
+  tags: ['mrwilson', 'service', 'full']
+
+- name: SELinux Policy - Step 1
+  command: make -f /usr/share/selinux/devel/Makefile
+  tags: ['mrwilson', 'service', 'full']
+  args:
+    chdir: /srv/bot
+
+- name: SELinux Policy - Step 2
+  command: semodule -i /srv/bot/mrwilson.pp
+  tags: ['mrwilson', 'service', 'full']
+
+- name: cleanup SELinux files
+  file: path={{ item }} state=absent
+  with_items:
+    - /srv/bot/mrwilson.pp
+    - /srv/bot/mrwilson.te
+    - /srv/bot/mrwilson.if
+    - /srv/bot/mrwilson.fc
+    - /srv/bot/tmp
+  tags: ['mrwilson', 'service', 'full']

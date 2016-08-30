@@ -1,0 +1,18 @@
+---
+
+#To collect info like ip on server X to use on unit file for process Y
+#- hosts: <some other host>
+#  name: Gather facts from collectors
+#  tasks: [ ]
+
+- hosts: serviceservers
+  become: no
+  vars:
+    - envi: "{{ inventory_file | basename }}"
+  vars_files:
+    - "vars/{{ envi }}.yml"
+    - "vars/{{ envi }}_vault.yml"
+  roles:
+    - common
+    - common-service
+    - mrwilson

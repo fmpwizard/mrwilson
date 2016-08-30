@@ -1,0 +1,50 @@
+policy_module(mrwilson, 1.0.0)
+
+########################################
+#
+# Declarations
+#
+
+type mrwilson_t;
+
+type mrwilson_exec_t;
+init_daemon_domain(mrwilson_t, mrwilson_exec_t)
+
+type mrwilson_var_t;
+#make mrwilson_var_t a file context
+files_type(mrwilson_var_t)
+
+require {
+	type user_home_t;
+	type init_t;
+	type user_home_dir_t;
+	type sysctl_net_t;
+	type unreserved_port_t;
+	type http_port_t;
+	class dir { add_name remove_name search write getattr };
+	class file { create execute open read rename write unlink append getattr };
+	class tcp_socket { accept listen name_bind name_connect };
+	class capability net_bind_service;
+}
+
+
+### Manually added
+allow mrwilson_t mrwilson_var_t:dir { add_name remove_name write search getattr};
+allow mrwilson_t mrwilson_var_t:file { unlink create open rename write read append getattr };
+allow mrwilson_t user_home_dir_t:dir search;
+allow mrwilson_t user_home_t:file { open read write};
+allow mrwilson_t self:capability net_bind_service;
+allow mrwilson_t sysctl_net_t:dir search;
+allow mrwilson_t sysctl_net_t:file { read open };
+allow mrwilson_t http_port_t:tcp_socket { name_bind name_connect };
+allow mrwilson_t unreserved_port_t:tcp_socket { name_bind name_connect };
+allow mrwilson_t self:tcp_socket { listen accept };
+
+########################################
+
+allow mrwilson_t self:fifo_file rw_fifo_file_perms;
+allow mrwilson_t self:unix_stream_socket create_stream_socket_perms;
+domain_use_interactive_fds(mrwilson_t)
+auth_use_nsswitch(mrwilson_t)
+miscfiles_read_localization(mrwilson_t)
+sysnet_dns_name_resolve(mrwilson_t)

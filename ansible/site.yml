@@ -1,0 +1,9 @@
+---
+# all servers
+#ansible-playbook  site.yml -i hosts/production --ask-vault-pass -u root
+
+
+- include: init.yml
+- include: mrwilson.yml
+- include: playbooks/deploy.yml
+- include: playbooks/site-state.yml app_state=restarted

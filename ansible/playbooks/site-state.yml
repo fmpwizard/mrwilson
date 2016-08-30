@@ -1,0 +1,10 @@
+---
+# start/stop/restart all apps
+# ansible-playbook -i hosts/production playbooks/site-state.yml --extra-vars "app_state=restarted" --ask-vault-pass
+
+- hosts: serviceservers
+  tags: ['full']
+  become: no
+  gather_facts: no
+  tasks:
+    - include: inc/app-state.yml

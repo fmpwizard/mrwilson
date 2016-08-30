@@ -1,0 +1,5 @@
+wit_access_token: "{{vault_wit_access_token}}"
+nexmo_api_secret: "{{vault_nexmo_api_secret}}"
+nexmo_api_key: "{{vault_nexmo_api_key}}"
+nexmo_from_number: "{{vault_nexmo_from_number}}"
+token_to: "{{vault_token_to}}"
