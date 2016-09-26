@@ -27,7 +27,7 @@ func main() {
 	log.Println("mode is ", mode)
 	smsToken()
 	db = initDB()
-	http.HandleFunc("/sms", NexmoHandler)
+	http.Handle("/sms", checkNexmoIP(NexmoHandler))
 	http.Handle("/db", checkToken(CSVHandler))
 	http.Handle("/recommend", checkToken(RecommendHandler))
 	if mode == production {

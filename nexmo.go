@@ -7,6 +7,7 @@ import (
 	"errors"
 	"io/ioutil"
 	"log"
+	"net"
 	"net/http"
 	"net/url"
 	"os"
@@ -14,6 +15,28 @@ import (
 	"strings"
 	"time"
 )
+
+func checkNexmoIP(next http.HandlerFunc) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+
+		//Nexmo's IP addresses
+		//https://help.nexmo.com/hc/en-us/articles/204015053-What-IP-addresses-should-I-whitelist-in-order-to-receive-requests-from-Nexmo-
+		subnets := []string{
+			"174.37.245.32/29",
+			"174.36.197.192/28",
+			"173.193.199.16/28",
+			"119.81.44.0/28",
+		}
+
+		for _, row := range subnets {
+			_, ipNet, _ := net.ParseCIDR(row)
+			if ipNet.Contains(net.ParseIP(r.RemoteAddr)) {
+				next.ServeHTTP(w, r)
+			}
+		}
+		http.Error(w, "Invalid IP", 403)
+	})
+}
 
 //NexmoHandler handles the GET requests from nexmo
 func NexmoHandler(w http.ResponseWriter, r *http.Request) {
@@ -25,6 +48,7 @@ func NexmoHandler(w http.ResponseWriter, r *http.Request) {
 	//concat-total	The number of parts in this concatenated message.	If concat is True
 	//concat-part	The number of this part in the message. Counting starts at 1.	If concat is True
 	//So we read all those parameters
+
 	userCell := r.FormValue("msisdn")
 	messageID := r.FormValue("messageId")
 	text := r.FormValue("text")

@@ -3,24 +3,20 @@
 
 - name: enable firewalld
   service: name=firewalld enabled=yes state=started
-  tags: ['firewalld-web', 'web']
+  tags: ['firewalld-web', 'web', 'common-service', 'full']
 
 - name: firewalld port 80
   firewalld: port=80/tcp permanent=true state=enabled
-  tags: ['firewalld-web', 'web']
+  tags: ['firewalld-web', 'web', 'common-service', 'full']
 
 - name: firewalld port 443
   firewalld: port=443/tcp permanent=true state=enabled
-  tags: ['firewalld-web', 'web']
+  tags: ['firewalld-web', 'web', 'common-service', 'full']
 
 - name: firewalld port 22
   firewalld: port=22/tcp permanent=true state=enabled
-  tags: ['firewalld-web', 'web']
-
-- name: firewalld port 2200
-  firewalld: port=2200/tcp permanent=true state=enabled
-  tags: ['firewalld-web', 'web']
+  tags: ['firewalld-web', 'web', 'common-service', 'full']
 
 - name: reload firewalld
   command: firewall-cmd --reload
-  tags: ['firewalld-web', 'web']
+  tags: ['firewalld-web', 'web', 'common-service', 'full']

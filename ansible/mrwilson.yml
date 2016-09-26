@@ -15,4 +15,5 @@
   roles:
     - common
     - common-service
+    - firewalld-web
     - mrwilson
