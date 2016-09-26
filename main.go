@@ -28,7 +28,7 @@ func main() {
 	smsToken()
 	db = initDB()
 	http.HandleFunc("/sms", NexmoHandler)
-	http.Handle("/bolt", checkToken(CSVHandler))
+	http.Handle("/db", checkToken(CSVHandler))
 	http.Handle("/recommend", checkToken(RecommendHandler))
 	if mode == production {
 		m := autocert.Manager{
@@ -103,7 +103,7 @@ func ReadProps() {
 		if _, err := os.Stat(path); os.IsNotExist(err) {
 			config.HTTPPort = 1212
 			config.WitAccessToken = "enter wit access token here."
-			config.DBPath = "/path/to/boltDB/file/"
+			config.DBPath = "/path/to/csv/file/"
 			sampleConfig, _ := json.MarshalIndent(config, "", "  ")
 			ioutil.WriteFile(path, sampleConfig, os.FileMode(int(0400)))
 			fmt.Printf("Created a sample config file: %s\nPlease update it with your information.\n", path)

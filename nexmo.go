@@ -146,7 +146,7 @@ type NexmoResponse struct {
 	}
 }
 
-//RestaurantSentimentKey is used to save data into BoltDB
+//RestaurantSentimentKey is used to save data into a csv file
 type RestaurantSentimentKey struct {
 	UserPhone string
 	Name      string
