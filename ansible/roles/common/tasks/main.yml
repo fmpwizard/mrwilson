@@ -3,11 +3,11 @@
 
 - name: python2-dnf
   command: dnf install -y python2-dnf
-  tags: ['common']
+  tags: ['common', 'full']
 
 - name: Install basics
   dnf: name={{ item }} state=latest
-  tags: common
+  tags: ['common', 'full']
   with_items:
     - curl
     - vim
@@ -17,6 +17,8 @@
     - policycoreutils-python-utils
     - policycoreutils-devel
     - make
+    - firewalld
+    - python-firewall
 
 #- name: Add ops group
 #  roup: name=ops state=present
