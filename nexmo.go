@@ -30,10 +30,11 @@ func checkNexmoIP(next http.HandlerFunc) http.Handler {
 
 		for _, row := range subnets {
 			_, ipNet, _ := net.ParseCIDR(row)
-			if ipNet.Contains(net.ParseIP(r.RemoteAddr)) {
+			if ipNet.Contains(net.ParseIP(strings.Split(r.RemoteAddr, ":")[0])) {
 				next.ServeHTTP(w, r)
 			}
 		}
+		log.Println("error getting sms from ip: ", net.ParseIP(strings.Split(r.RemoteAddr, ":")[0]))
 		http.Error(w, "Invalid IP", 403)
 	})
 }
