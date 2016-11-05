@@ -27,6 +27,7 @@ func main() {
 	log.Println("mode is ", mode)
 	smsToken()
 	db = initDB()
+	http.HandleFunc("/status", statusHandler)
 	http.Handle("/sms", checkNexmoIP(NexmoHandler))
 	http.Handle("/db", checkToken(CSVHandler))
 	http.Handle("/recommend", checkToken(RecommendHandler))
@@ -148,4 +149,9 @@ func RedirectHTTP(w http.ResponseWriter, r *http.Request) {
 	u.Host = r.Host
 	u.Scheme = "https"
 	http.Redirect(w, r, u.String(), 302)
+}
+
+// statusHandler is used by our monitoring system
+func statusHandler(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(200)
 }
