@@ -13,6 +13,7 @@ import (
 	"os"
 	"os/user"
 	"path/filepath"
+	"time"
 
 	"golang.org/x/crypto/acme/autocert"
 )
@@ -33,19 +34,20 @@ func main() {
 	http.Handle("/recommend", checkToken(RecommendHandler))
 	if mode == production {
 		m := autocert.Manager{
-			Prompt:     autocert.AcceptTOS,
-			HostPolicy: autocert.HostWhitelist(config.HostNames...),
-			Cache:      autocert.DirCache(config.LECacheFilePath),
-			Email:      config.LEEmail,
+			Prompt:      autocert.AcceptTOS,
+			HostPolicy:  autocert.HostWhitelist(config.HostNames...),
+			Cache:       autocert.DirCache(config.LECacheFilePath),
+			Email:       config.LEEmail,
+			RenewBefore: 30 * time.Hour * 24, //30 days
 		}
 		s := &http.Server{
-			Addr:      ":https",
-			TLSConfig: &tls.Config{GetCertificate: m.GetCertificate},
+			Addr: ":https",
+			TLSConfig: &tls.Config{
+				GetCertificate: m.GetCertificate,
+			},
 		}
 		//Listen on port 80 and redirect them all to 443
-		go func() {
-			log.Fatal(http.ListenAndServe(":80", http.HandlerFunc(httpToHTTPS)))
-		}()
+		go http.ListenAndServe(":http", m.HTTPHandler(nil))
 		log.Println("Running on port: 443")
 		s.ListenAndServeTLS("", "")
 	} else {

@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 ExecStart=/srv/bot/mrwilson
-Restart=on-failure
+Restart=always
 RestartSec=10s
 User=bot
 Environment=RUNMODE=production

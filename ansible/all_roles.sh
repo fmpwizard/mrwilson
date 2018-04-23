@@ -13,3 +13,13 @@ ansible-playbook -i hosts/production playbooks/site-state.yml --ask-vault-pass -
 
 
 # ansible-playbook site.yml -i hosts/production  --tags=full --ask-vault-pass -u root
+
+
+########### Deploy new binary and restart ############
+#make sure to go build and then:
+
+# deploy production
+# ansible-playbook -i hosts/production playbooks/deploy.yml --ask-vault-pass -u root
+# call
+# ansible-playbook -i hosts/production playbooks/site-state.yml --ask-vault-pass --extra-vars "app_state=restarted" -u root
+# to start the service
