@@ -1,5 +1,5 @@
-//Mr Wilson is a service that uses the wit.ai api to understand your text messages and stores them for later retrieval
-//It uses nexmo as an sms gateway
+// Mr Wilson is a service that uses the wit.ai api to understand your text messages and stores them for later retrieval
+// It uses nexmo as an sms gateway
 package main
 
 import (
@@ -29,9 +29,12 @@ func main() {
 	smsToken()
 	db = initDB()
 	http.HandleFunc("/status", statusHandler)
+	http.HandleFunc("/message", ConsciousnessHandler)
+	http.HandleFunc("/data", DataHandler)
 	http.Handle("/sms", checkNexmoIP(NexmoHandler))
 	http.Handle("/db", checkToken(CSVHandler))
 	http.Handle("/recommend", checkToken(RecommendHandler))
+	http.HandleFunc("/ip", ip)
 	if mode == production {
 		m := autocert.Manager{
 			Prompt:      autocert.AcceptTOS,
@@ -156,4 +159,9 @@ func RedirectHTTP(w http.ResponseWriter, r *http.Request) {
 // statusHandler is used by our monitoring system
 func statusHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(200)
+}
+
+// ip returns the ip address of the client connecting to this page
+func ip(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte(r.RemoteAddr))
 }

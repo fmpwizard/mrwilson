@@ -4,7 +4,7 @@ ansible-playbook -i hosts/production playbooks/deploy.yml --ask-vault-pass -u ro
 ansible-playbook mrwilson.yml -i hosts/production  --tags=common --ask-vault-pass -u root
 ansible-playbook mrwilson.yml -i hosts/production  --tags=common-service --ask-vault-pass -u root
 ansible-playbook mrwilson.yml -i hosts/production  --tags=mrwilson --ask-vault-pass -u root
-ansible-playbook -i hosts/production playbooks/site-state.yml --ask-vault-pass --extra-vars "app_state=restart" -u root
+ansible-playbook -i hosts/production playbooks/site-state.yml --ask-vault-pass --extra-vars "app_state=restarted" -u root
 
 ## Full
 ## You can run this on a fresh server or one already running, 100% safe

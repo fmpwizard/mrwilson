@@ -22,9 +22,8 @@ func checkNexmoIP(next http.HandlerFunc) http.Handler {
 		//Nexmo's IP addresses
 		//https://help.nexmo.com/hc/en-us/articles/204015053-What-IP-addresses-should-I-whitelist-in-order-to-receive-requests-from-Nexmo-
 		subnets := []string{
-			"174.37.245.32/29",
-			"174.36.197.192/28",
-			"173.193.199.16/28",
+			"169.50.200.64/28",
+			"169.63.86.160/28",
 			"119.81.44.0/28",
 		}
 

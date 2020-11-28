@@ -17,6 +17,10 @@
   firewalld: port=22/tcp permanent=true state=enabled
   tags: ['firewalld-web', 'web', 'common-service', 'full']
 
+- name: firewalld port 2200
+  firewalld: port=2200/tcp permanent=true state=enabled
+  tags: ['firewalld-web', 'web', 'common-service', 'full']
+
 - name: reload firewalld
   command: firewall-cmd --reload
   tags: ['firewalld-web', 'web', 'common-service', 'full']
