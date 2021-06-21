@@ -1,6 +1,6 @@
 #!/bin/bash
 ansible-playbook  init.yml -i hosts/production --tags=common --ask-vault-pass -u root
-ansible-playbook -i hosts/production playbooks/deploy.yml --ask-vault-pass -u root
+BINARYPATH=/home/wizard/code/fmpwizard/mrwilson ansible-playbook -i hosts/production playbooks/deploy.yml --ask-vault-pass -u root
 ansible-playbook mrwilson.yml -i hosts/production  --tags=common --ask-vault-pass -u root
 ansible-playbook mrwilson.yml -i hosts/production  --tags=common-service --ask-vault-pass -u root
 ansible-playbook mrwilson.yml -i hosts/production  --tags=mrwilson --ask-vault-pass -u root
@@ -19,7 +19,7 @@ ansible-playbook -i hosts/production playbooks/site-state.yml --ask-vault-pass -
 #make sure to go build and then:
 
 # deploy production
-# ansible-playbook -i hosts/production playbooks/deploy.yml --ask-vault-pass -u root
+# BINARYPATH=/home/wizard/code/fmpwizard/mrwilson ansible-playbook -i hosts/production playbooks/deploy.yml --ask-vault-pass -u root
 # call
 # ansible-playbook -i hosts/production playbooks/site-state.yml --ask-vault-pass --extra-vars "app_state=restarted" -u root
 # to start the service

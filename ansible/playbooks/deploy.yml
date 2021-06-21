@@ -1,6 +1,6 @@
 ---
 # deploy production
-# ansible-playbook -i hosts/production playbooks/deploy.yml --ask-vault-pass -u root
+# BINARYPATH=/home/wizard/code/fmpwizard/mrwilson ansible-playbook -i hosts/production playbooks/deploy.yml --ask-vault-pass -u root
 # call
 # ansible-playbook -i hosts/production playbooks/site-state.yml --ask-vault-pass --extra-vars "app_state=restarted" -u root
 # to start the service
@@ -10,7 +10,7 @@
   gather_facts: no
   tags: ['full']
   vars:
-    gopath: "{{ lookup('env', 'GOPATH')}}"
+    binaryPath: "{{ lookup('env', 'BINARYPATH')}}"
   tasks:
     - include: inc/app-copy-worker.yml
 
